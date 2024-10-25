@@ -1,0 +1,40 @@
+.cta-section {
+  padding: 50px;
+  text-align: center;
+  background-color: #556bf8;
+  display: flex;
+  align-items: center;
+  height: 400px;
+  margin: 50px 0;
+}
+.cta-content {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.cta-content h2 {
+  font-family: Outfit;
+  font-size: 52px;
+  font-weight: 700;
+  text-align: left;
+  color: #ffffff;
+  margin: 0;
+}
+
+.cta-content .btn-create-account {
+  width: 214px;
+  height: 60px;
+  border-radius: 50px;
+  font-family: Outfit;
+  font-size: 20px;
+  font-weight: 400;
+  color: #4b5563;
+  background: #ffffff;
+  margin: 0;
+}
+.appointment_img img {
+  width: 400px;
+  height: 455px;
+  object-fit: cover;
+  margin-top: -50px;
+}

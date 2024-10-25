@@ -1,0 +1,7 @@
+.adminContainer {
+  display: flex;
+}
+.content {
+  flex: 1;
+  background: #eaefff;
+}

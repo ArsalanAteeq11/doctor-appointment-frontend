@@ -1,0 +1,50 @@
+.hero {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 50px;
+  background-color: #556bf8;
+  height: 100%;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  overflow: hidden;
+}
+
+.hero h1 {
+  max-width: 500px;
+  font-size: 3rem;
+  font-family: Outfit;
+  font-weight: 600;
+  color: #ffffff;
+  margin-bottom: 10px;
+}
+.hero .group-profile {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  margin-bottom: 10px;
+}
+.group-profile p {
+  font-family: Outfit;
+  font-size: 18px;
+  font-weight: 400;
+  text-align: left;
+  color: #ffffff;
+}
+
+.hero .btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: 220px;
+  height: 55px;
+  border-radius: 47px;
+  background: #ffffff;
+  cursor: pointer;
+}
+.hero-image img {
+  width: 600px;
+  object-fit: cover;
+  margin-bottom: -55px;
+}

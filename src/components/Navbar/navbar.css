@@ -1,0 +1,38 @@
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 30px;
+  background-color: #fff;
+  border-bottom: 1px solid #adadad;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.navbar .logo img {
+  width: 217px;
+  height: 46px;
+  cursor: pointer;
+}
+
+.navbar .menu {
+  list-style: none;
+  display: flex;
+  gap: 20px;
+}
+
+.navbar .menu a {
+  text-decoration: none;
+  color: #333;
+}
+.navbar .menu li a:hover {
+  color: #556bf8;
+}
+.btn-create-account {
+  background-color: #556bf8;
+  color: #fff;
+  border: none;
+  width: 150px;
+  height: 45px;
+  border-radius: 47px;
+  cursor: pointer;
+}

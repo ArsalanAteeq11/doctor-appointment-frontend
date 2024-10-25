@@ -1,0 +1,25 @@
+.sidebar {
+  width: 250px;
+
+  border-right: 1px solid black;
+}
+.sidebar .sidebarList {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding-top: 25px;
+}
+.sidebarList .listItems {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 20px;
+  cursor: pointer;
+}
+.listItems:hover {
+  background: #eaefff;
+}
+.activeItem {
+  background: #eaefff;
+  border-right: 5px solid #556bf8;
+}
