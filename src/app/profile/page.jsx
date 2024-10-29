@@ -1,8 +1,9 @@
 "use client";
+import { useSelector } from "react-redux";
 import "./profile.css";
 const AddDoctorPage = () => {
   //   const dispatch = useDispatch();
-  //   const { loading, user, token } = useSelector((store) => store.auth);
+    const { loading, user, token } = useSelector((store) => store.auth);
   //   const patient = user.role === "Patient";
   // const imageRef = useRef();
 
@@ -115,7 +116,7 @@ const AddDoctorPage = () => {
         <div className="doctorsDetail">
           <div>
             <label htmlFor="name">Name</label>
-            <input type="text" placeholder="Name" />
+            <input type="text" placeholder="Name" value={user?.username}/>
           </div>
 
           <div>
@@ -138,7 +139,7 @@ const AddDoctorPage = () => {
 
           <div>
             <label htmlFor="email"> Email</label>
-            <input type="email" name="email" placeholder="Email" disabled />
+            <input type="email" name="email" value={user?.email} placeholder="Email" disabled />
           </div>
 
           <div>
@@ -148,7 +149,7 @@ const AddDoctorPage = () => {
 
           <div>
             <label htmlFor="role">Role</label>
-            <input type="text" name="role" placeholder="Role" disabled />
+            <input type="text" name="role" value={user?.role} placeholder="Role" disabled />
           </div>
 
           <div>

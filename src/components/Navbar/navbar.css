@@ -27,7 +27,46 @@
 .navbar .menu li a:hover {
   color: #556bf8;
 }
+.imgCont{
+  position: relative;
+}
+.imgCont .img {
+  width: 50px;
+  height: 50;
+  border-radius: 50%;
+  object-fit: cover;
+  cursor: pointer;
+}
+
+.dropdownCont {
+  display: none;
+  position: absolute;
+  top: 50px;
+  right: 0;
+  width: 180px;
+  height: auto;
+  border-radius: 4px;
+  background: #f8f8f8;
+}
+.imgCont:hover .dropdownCont {
+  display: block;
+}
+.dropdownCont ul {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 10px;
+}
+.dropdownCont ul li {
+  cursor: pointer;
+  list-style: none;
+  color: #333;
+}
+.dropdownCont ul li:hover {
+  color: #556bf8;
+}
 .btn-create-account {
+  font-family: "Outfit";
   background-color: #556bf8;
   color: #fff;
   border: none;

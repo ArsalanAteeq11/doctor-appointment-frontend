@@ -25,12 +25,13 @@
   border: 1px solid #d8d8d8;
   background: #ffffff;
   margin-top: 10px;
-  padding: 10px 20px;
+  padding: 20px 20px;
 }
 .subCont .profilePhoto {
   display: flex;
   align-items: center;
   gap: 10px;
+  margin-bottom: 10px;
 }
 .profilePhoto p {
   font-family: Outfit;
