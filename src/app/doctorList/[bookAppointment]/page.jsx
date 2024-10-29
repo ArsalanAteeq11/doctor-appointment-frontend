@@ -1,5 +1,8 @@
 "use client";
+import { useEffect, useState } from "react";
 import "./style.css";
+import axios from "axios";
+import { useParams } from "next/navigation";
 
 const bookingSlots = [
   {
@@ -69,7 +72,30 @@ const doctors = [
   },
 ];
 
+
+
 const Page = () => {
+  const id = useParams().bookAppointment
+  console.log(id)
+  const [doctor, setDoctor] = useState(null)
+  const url = "http://localhost:4000"
+  useEffect(()=>{
+  
+    const fetchDoctor = async () =>{
+      try {
+        const res = await axios.get(`${url}/user/getuser/${id}`)
+        if (res?.data?.success) {
+           setDoctor(res?.data?.user)
+        }
+        else{
+          console.log(res?.data?.message)
+        }
+      } catch (error) {
+        console.log(error)
+      }
+    }
+    fetchDoctor()
+  },[])
   return (
     <div className="container">
       <div className="subCont">
@@ -80,24 +106,19 @@ const Page = () => {
           <div className="doctorProfile">
             <div className="doctorSpecialty">
               <div className="doctorName">
-                <h1>Dr. Richard James</h1>
-                <img src="/assets/assets_frontend/verified_icon.svg" alt="" />
+                <h1>{doctor?.username}</h1>
+                <img src={doctor?.profilePhoto ? `${url}/images/${doctor?.profilePhoto}` :"/assets/assets_frontend/verified_icon.svg"} alt="" />
               </div>
-              <p>MBBS - General Physician</p>
+              <p>{doctor?.education} - {doctor?.specialty}</p>
             </div>
             <div className="doctorAbout">
               <h3>About</h3>
               <p>
-                Dr. Davis has a strong commitment to delivering comprehensive
-                medical care, focusing on preventive medicine, early diagnosis,
-                and effective treatment strategies. Dr. Davis has a strong
-                commitment to delivering comprehensive medical care, focusing on
-                preventive medicine, early diagnosis, and effective treatment
-                strategies.
+                {doctor?.about}
               </p>
             </div>
             <p className="doctorFee">
-              Appointment fee: <span>$300</span>{" "}
+              Appointment fee: <span>${doctor?.fees}</span>{" "}
             </p>
           </div>
         </div>

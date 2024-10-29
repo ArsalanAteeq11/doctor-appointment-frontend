@@ -1,7 +1,10 @@
 "use client";
-import React from "react";
+import React, { useEffect } from "react";
 import "./doctorList.css"; // separate CSS for styling
 import { useRouter } from "next/navigation";
+import axios from "axios";
+import { useDispatch, useSelector } from "react-redux";
+import { setDoctors } from "@/redux/doctorSlice";
 
 const doctors = [
   {
@@ -80,6 +83,27 @@ const doctors = [
 ];
 const DoctorList = () => {
   const router = useRouter();
+  const dispatch = useDispatch()
+  const url = "http://localhost:4000"
+
+  useEffect(()=>{
+    const fetchDoctors = async () =>{
+      try {
+        const res = await axios.get(`${url}/user/alldoctors`)
+        if (res?.data?.success) {
+          dispatch(setDoctors(res?.data?.doctors))
+        }
+        else{
+          console.log(res?.data?.message)
+        }
+      } catch (error) {
+        console.log(error)
+      }
+    }
+    fetchDoctors()
+  },[dispatch])
+
+  const {doctors} = useSelector(store=>store.doctor)
   return (
     <div className="doctor-list-container">
       <p>Browse through the doctor’s specialist.</p>
@@ -98,16 +122,13 @@ const DoctorList = () => {
             <div
               key={index}
               className="doctor-card"
-              onClick={() => router.push(`/doctorList/${index + 1}`)}
+              onClick={() => router.push(`/doctorList/${doctor?._id}`)}
             >
-              <img src={doctor.img} alt={doctor.name} />
-              {doctor.available ? (
+              <img src={doctor?.profilePhoto ? `${url}/images/${doctor.profilePhoto}` : "/assets/assets_frontend/profile_pic.png"} alt={doctor.name} />
+              
                 <span className="available">Available</span>
-              ) : (
-                <span className="unavailable">Unavailable</span>
-              )}
-              <h3>{doctor.name}</h3>
-              <p>{doctor.speciality}</p>
+              <h3>{doctor.username}</h3>
+              <p>{doctor.specialty}</p>
             </div>
           ))}
         </div>

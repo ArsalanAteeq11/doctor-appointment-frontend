@@ -32,8 +32,9 @@
 }
 .imgCont .img {
   width: 50px;
-  height: 50;
+  height: 50px;
   border-radius: 50%;
+  background-color: #556bf8;
   object-fit: cover;
   cursor: pointer;
 }

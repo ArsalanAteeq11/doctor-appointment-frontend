@@ -10,6 +10,7 @@ import toast from "react-hot-toast";
 const Navbar = () => {
   const router = useRouter();
   const dispatch = useDispatch()
+  const url = "http://localhost:4000"
   const { user } = useSelector((store) => store.auth);
 
   const logout = () =>{
@@ -42,7 +43,7 @@ const Navbar = () => {
       </ul>
       {user ? (
         <div className="imgCont">
-        <img src="/assets/assets_frontend/profile_pic.png" className="img"/>
+        <img src={user?.profilePhoto ? `${url}/images/${user?.profilePhoto}` :  "/assets/assets_frontend/profile_pic.png"} className="img"/>
         <div className="dropdownCont">
           <ul>
             <li onClick={()=>router.push("/profile")}>My Profile</li>
