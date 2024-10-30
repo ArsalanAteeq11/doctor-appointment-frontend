@@ -50,6 +50,7 @@
 .doctor-card {
   display: flex;
   flex-direction: column;
+  height: 340px;
   gap: 5px;
   border-radius: 12px;
   border: 1px solid #c9d8ff;

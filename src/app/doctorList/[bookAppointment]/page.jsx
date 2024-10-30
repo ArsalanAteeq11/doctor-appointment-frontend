@@ -71,7 +71,22 @@ const doctors = [
     speciality: "General physician",
   },
 ];
+const getNextSevenDays = () => {
+  const days = [];
+  const today = new Date();
 
+  for (let i = 0; i < 7; i++) {
+    const nextDate = new Date(today); // Clone the current date
+    nextDate.setDate(today.getDate() + i); // Increment by i days
+
+    const day = nextDate.toLocaleString("en-US", { weekday: "short" }); // Get day name (Mon, Tue, etc.)
+    const date = nextDate.getDate(); // Get day of the month
+
+    // Store nextDate as a Date object, not a string
+    days.push({ day, dateObject: nextDate, date }); // Push both the date object and day of month
+  }
+  return days;
+};
 
 
 const Page = () => {
@@ -97,17 +112,17 @@ const Page = () => {
     fetchDoctor()
   },[])
   return (
-    <div className="container">
+    <div className="bookingAppointmentCont">
       <div className="subCont">
         <div className="doctorImg">
-          <img src="/assets/assets_frontend/doc1.png" alt="" />
+          <img src={doctor?.profilePhoto ? `${url}/images/${doctor?.profilePhoto}` : doctor?.gender === "female" ? "https://png.pngtree.com/png-vector/20230715/ourlarge/pngtree-female-doctor-avatar-vector-design-png-image_7642475.png" : "https://png.pngtree.com/png-clipart/20220911/original/pngtree-male-doctor-avatar-icon-illustration-png-image_8537702.png"} alt="" />
         </div>
         <div className="doctorDetails">
           <div className="doctorProfile">
             <div className="doctorSpecialty">
               <div className="doctorName">
                 <h1>{doctor?.username}</h1>
-                <img src={doctor?.profilePhoto ? `${url}/images/${doctor?.profilePhoto}` :"/assets/assets_frontend/verified_icon.svg"} alt="" />
+                <img src="/assets/assets_frontend/verified_icon.svg" alt="" />
               </div>
               <p>{doctor?.education} - {doctor?.specialty}</p>
             </div>
@@ -126,10 +141,10 @@ const Page = () => {
       <div className="bookingSlots">
         <h2>Booking slots</h2>
         <div className="AppointmentDate">
-          {bookingSlots.map((item, index) => (
+          {getNextSevenDays().map((item, index) => (
             <div key={index} className="AppointmentDay">
               <span>{item.day}</span>
-              <span>{item.Date}</span>
+              <span>{item.date}</span>
             </div>
           ))}
         </div>
@@ -151,6 +166,7 @@ const Page = () => {
           {doctors.map((item) => (
             <div key={item?.id} className="doctor-card">
               <img src={item.image} alt="" />
+
               <span className="available">Available</span>
               <h3>{item.name}</h3>
               <p>{item.speciality}</p>

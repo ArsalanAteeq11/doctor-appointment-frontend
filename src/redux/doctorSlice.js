@@ -10,7 +10,7 @@ const doctorSlice = createSlice({
   initialState,
   reducers: {
     setDoctors:(state,action)=>{
-        state.doctors = [...state.doctors, ...action.payload]
+        state.doctors = action.payload
        
     }
   },
