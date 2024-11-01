@@ -3,37 +3,11 @@ import { useEffect, useState } from "react";
 import "./style.css";
 import axios from "axios";
 import { useParams } from "next/navigation";
+import { useDispatch, useSelector } from "react-redux";
+import toast from "react-hot-toast";
+import { setLoading } from "@/redux/userSlice";
 
-const bookingSlots = [
-  {
-    day: "mon",
-    Date: "10",
-  },
-  {
-    day: "tue",
-    Date: "11",
-  },
-  {
-    day: "wed",
-    Date: "12",
-  },
-  {
-    day: "thu",
-    Date: "13",
-  },
-  {
-    day: "fri",
-    Date: "14",
-  },
-  {
-    day: "sat",
-    Date: "15",
-  },
-  {
-    day: "sun",
-    Date: "16",
-  },
-];
+
 const doctors = [
   {
     id: 1,
@@ -79,7 +53,7 @@ const getNextSevenDays = () => {
     const nextDate = new Date(today); // Clone the current date
     nextDate.setDate(today.getDate() + i); // Increment by i days
 
-    const day = nextDate.toLocaleString("en-US", { weekday: "short" }); // Get day name (Mon, Tue, etc.)
+    const day = nextDate.toLocaleString("en-US", { month: "short" }); // Get day name (Mon, Tue, etc.)
     const date = nextDate.getDate(); // Get day of the month
 
     // Store nextDate as a Date object, not a string
@@ -88,12 +62,33 @@ const getNextSevenDays = () => {
   return days;
 };
 
-
+const timeSlots = ["8:00 am", "8:30 am", "9:00 am", "9:30 am", "10:00 am", "10:30 am", "11:00 am"];
 const Page = () => {
   const id = useParams().bookAppointment
-  console.log(id)
   const [doctor, setDoctor] = useState(null)
+  const dispatch = useDispatch()
+  const {loading,user,token} = useSelector(store=>store.auth)
+  const {doctors} = useSelector(store=>store.doctor)
   const url = "http://localhost:4000"
+
+  const [selectedDay, setSelectedDay] = useState(null);  // Selected day and date
+  const [selectedTime, setSelectedTime] = useState(null); // Selected time slot
+  const [appointments, setAppointments] = useState([]);  // Store all appointments of the doctor
+  const [bookedSlots, setBookedSlots] = useState([]); // Booked slots for the selected day
+
+
+  const handleDaySelection = (dayItem) => {
+    setSelectedDay(dayItem);
+
+    // Filter appointments for the selected day
+    const bookedOnSelectedDay = appointments.filter(
+      (appointment) => appointment.date === dayItem.date
+    );
+
+    // Get booked time slots from filtered appointments
+    const bookedTimes = bookedOnSelectedDay.map((appointment) => appointment.timeSlot);
+    setBookedSlots(bookedTimes); // Store booked time slots
+  };
   useEffect(()=>{
   
     const fetchDoctor = async () =>{
@@ -111,6 +106,46 @@ const Page = () => {
     }
     fetchDoctor()
   },[])
+
+  const bookAppointment = async () => {
+    if (!selectedDay || !selectedTime) {
+      toast.error("Please select both a date and a time slot.");
+      return;
+    }
+    dispatch(setLoading(true))
+    try {
+      const appointmentData = {
+        doctorId: id,
+        patientId: user?._id,
+        day:selectedDay.day,
+        date: selectedDay.date,
+
+        timeSlot: selectedTime,
+      };
+
+      const response = await axios.post(`${url}/appointment/book`, appointmentData, { headers: { token } });
+
+      if (response?.data?.success) {
+        toast.success("Appointment booked successfully!");
+        setSelectedDay(null);
+        setSelectedTime(null);
+
+      } else {
+        toast.error(response.data.message || "Failed to book appointment.");
+      }
+    } catch (error) {
+      console.error(error);
+      toast.error("Error booking appointment.");
+    }finally{
+      dispatch(setLoading(false))
+
+    }
+  };
+
+  const filteredDoctors = doctor && doctors.filter((doc)=>doc.specialty === doctor.specialty)
+  console.log("filteredDoctors", filteredDoctors)
+  console.log("doctors",doctors)
+
   return (
     <div className="bookingAppointmentCont">
       <div className="subCont">
@@ -122,6 +157,7 @@ const Page = () => {
             <div className="doctorSpecialty">
               <div className="doctorName">
                 <h1>{doctor?.username}</h1>
+                {user?._id === id && <p>(You)</p>}
                 <img src="/assets/assets_frontend/verified_icon.svg" alt="" />
               </div>
               <p>{doctor?.education} - {doctor?.specialty}</p>
@@ -138,40 +174,48 @@ const Page = () => {
           </div>
         </div>
       </div>
-      <div className="bookingSlots">
+      {user?._id !== id && <div className="bookingSlots">
         <h2>Booking slots</h2>
         <div className="AppointmentDate">
           {getNextSevenDays().map((item, index) => (
-            <div key={index} className="AppointmentDay">
+            <div key={index} className={`AppointmentDay ${selectedDay?.date === item.date ? "selected" : ''}` }  onClick={() => handleDaySelection(item)}>
               <span>{item.day}</span>
               <span>{item.date}</span>
             </div>
           ))}
         </div>
         <div className="AppointmentTime">
-          <button>8.00 am</button>
-          <button>8.30 am</button>
-          <button>9.00 am</button>
-          <button>9.30 am</button>
-          <button>10.00 am</button>
-          <button>10.30 am</button>
-          <button>11.00 am</button>
+        {timeSlots.map((time, index) => (
+            <button
+              key={index}
+              className={`${selectedTime === time ? "selectedTime" : ''}`}
+              disabled={bookedSlots.includes(time)} // Disable if the slot is already booked
+              onClick={() => setSelectedTime(time)}
+            >
+              {time}
+            </button>
+          ))}
         </div>
-        <button className="btn">Book an appointment</button>
-      </div>
+        <button className="btn" onClick={bookAppointment}>{loading? "Loading..." :  "Book an appointment"}</button>
+      </div>}
+      
       <div className="relatedDoctors">
         <h2>Related Doctors</h2>
         <p>Simply browse through our extensive list of trusted doctors.</p>
         <div className="doctor-cards">
-          {doctors.map((item) => (
-            <div key={item?.id} className="doctor-card">
-              <img src={item.image} alt="" />
-
-              <span className="available">Available</span>
-              <h3>{item.name}</h3>
-              <p>{item.speciality}</p>
-            </div>
-          ))}
+          {filteredDoctors?.length ? (
+            filteredDoctors.map((item) => (
+              <div key={item?._id} className="doctor-card">
+                <img src={item?.profilePhoto ? `${url}/images/${item?.profilePhoto}` : null} alt="" />
+  
+                <span className="available">Available</span>
+                <h3>{item?.username}</h3>
+                <p>{item?.specialty}</p>
+              </div>
+            )
+          )) : (
+            <p>No doctors found</p>
+          )}
         </div>
       </div>
     </div>

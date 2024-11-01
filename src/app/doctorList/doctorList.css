@@ -41,6 +41,9 @@
 .filter-section button:hover {
   background-color: #eaefff;
 }
+.filter-section .selected{
+  background: #eaefff;
+}
 .doctor-cards {
   display: grid;
   grid-template-columns: repeat(4, 1fr);

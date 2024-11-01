@@ -79,6 +79,7 @@
   background: #5f6fff;
   color: #ffffff;
   border: none;
+  text-transform: capitalize;
 }
 .btnCont .cancelBtn {
   background: #ffffff;

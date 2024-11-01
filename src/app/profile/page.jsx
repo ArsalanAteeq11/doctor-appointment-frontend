@@ -8,7 +8,7 @@ import toast from "react-hot-toast";
 const AddDoctorPage = () => {
   const dispatch = useDispatch();
   const { loading, user, token } = useSelector((store) => store.auth);
-  const patient = user.role === "patient";
+  const patient = user?.role === "patient";
   const imageRef = useRef();
 
   const [formData, setFormData] = useState({
@@ -23,6 +23,7 @@ const AddDoctorPage = () => {
     phone: "",
     dob: "",
     about: "",
+    age:"",
     language: "", // New field for languages spoken
   });
 
@@ -34,11 +35,11 @@ const AddDoctorPage = () => {
       [e.target.name]: e.target.value,
     });
   };
-
+  
   const handleSubmit = async (e) => {
     e.preventDefault();
     dispatch(setLoading(true));
-
+    
     const form = new FormData();
     form.append("name", formData.name);
     form.append("specialty", formData.specialty);
@@ -49,10 +50,11 @@ const AddDoctorPage = () => {
     form.append("fees", formData.fees);
     form.append("phone", formData.phone);
     form.append("dob", formData.dob);
+    form.append("age",formData.age)
     form.append("about", formData.about);
     form.append("language", formData.language); // Added languages
     form.append("image", image);
-
+    
     try {
       const response = await axios.post(
         "http://localhost:4000/user/editprofile",
@@ -73,7 +75,9 @@ const AddDoctorPage = () => {
           language: response?.data?.user?.language,
           phone: response?.data?.user?.phone,
           dob: response?.data?.user?.dob,
+          age:response?.data?.user?.age
         };
+        dispatch(setLoading(false));
         dispatch(setUser(updatedProfile));
         toast.success(response.data.message);
         setFormData({
@@ -87,6 +91,7 @@ const AddDoctorPage = () => {
           about: "",
           language: "",
           dob: "",
+          age:"",
           phone: "",
         });
         setImage(null);
@@ -96,10 +101,9 @@ const AddDoctorPage = () => {
     } catch (error) {
       toast.error(
         "Error updating profile: " +
-          (error.response?.data?.message || error.message)
+        (error.response?.data?.message || error.message)
       );
     }
-    dispatch(setLoading(false));
   };
   return (
     <div className="profileContainer">
@@ -183,7 +187,7 @@ const AddDoctorPage = () => {
               />
             </div>
           )}
-
+ 
           <div>
             <label htmlFor="role">Role</label>
             <input
@@ -203,6 +207,17 @@ const AddDoctorPage = () => {
               value={formData.dob}
               onChange={handleChange}
               placeholder="Date of Birth"
+            />
+          </div>
+
+          <div>
+            <label htmlFor="age">Age</label>
+            <input
+              type="number"
+              name="age"
+              value={formData.age}
+              onChange={handleChange}
+              placeholder="Age"
             />
           </div>
 
@@ -303,7 +318,7 @@ const AddDoctorPage = () => {
             </>
           )}
 
-          <button className="btn" type="submit" disabled={loading}>
+          <button className="btn" type="submit">
             {loading ? "Loading..." : "Edit Profile"}
           </button>
         </form>

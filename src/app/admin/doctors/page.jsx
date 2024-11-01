@@ -1,5 +1,8 @@
+"use client"
 import AdminLayout from "@/components/AdminLayout/AdminLayout";
 import "./doctor.css";
+import { useEffect, useState } from "react";
+import axios from "axios";
 
 const doctors = [
   {
@@ -95,19 +98,41 @@ const doctors = [
 ];
 
 const page = () => {
+  const url = "http://localhost:4000"
+  const [doctors,setDoctors] = useState([])
+  useEffect(()=>{
+    const fetchDoctors = async () =>{
+      try {
+        const res = await axios.get(`${url}/user/alldoctors`)
+        if (res?.data?.success) {
+          setDoctors(res?.data?.doctors)
+        }
+        else{
+          console.log(res?.data?.message)
+        }
+      } catch (error) {
+        console.log(error)
+      }
+    }
+    fetchDoctors()
+  },[])
   return (
     <AdminLayout>
       <div className="doctorListCont">
         <h1>All Doctors</h1>
         <div className="doctors-grid">
-          {doctors.map((doctor, index) => (
-            <div key={index} className="doctor-card">
-              <img src={doctor.image} alt={doctor.name} />
-              <span className="doctor-status">{doctor.status}</span>
-              <p className="doctor-name">{doctor.name}</p>
-              <p className="doctor-speciality">{doctor.speciality}</p>
-            </div>
-          ))}
+          {doctors?.length ? (
+               doctors?.map((doctor) => (
+                <div key={doctor?._id} className="doctor-card">
+                  <img src={doctor?.profilePhoto ? `${url}/images/${doctor?.profilePhoto}` : null} alt={doctor.username} />
+                  <span className="doctor-status">Available</span>
+                  <p className="doctor-name">{doctor.username}</p>
+                  <p className="doctor-speciality">{doctor.specialty}</p>
+                </div>
+              ))
+          ) : (
+            <p>No Doctors Found</p>
+          )}
         </div>
       </div>
     </AdminLayout>

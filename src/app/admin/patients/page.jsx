@@ -24,6 +24,8 @@ const appointments = [
     datetime: "24th July, 2024, 10:AM",
   },
 ];
+
+
 const page = () => {
   return (
     <AdminLayout>

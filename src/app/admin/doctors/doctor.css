@@ -1,7 +1,7 @@
 .doctorListCont {
   padding: 30px;
   background: #ffffff;
-  height: auto;
+  min-height: 100vh;
 }
 .doctorListCont h1 {
   font-family: Outfit;

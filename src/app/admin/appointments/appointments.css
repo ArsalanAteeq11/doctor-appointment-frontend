@@ -21,7 +21,7 @@
 
 .appointmentDetails .appointmentTitles {
   display: grid;
-  grid-template-columns: 0.2fr 1.2fr 1.2fr 0.5fr 1.2fr 1.2fr 0.5fr 0.5fr;
+  grid-template-columns: 0.2fr 1.2fr 1.2fr 0.4fr 1.5fr 1.2fr 0.5fr 0.5fr;
   align-items: center;
   gap: 5px;
   padding: 10px 20px;
@@ -35,7 +35,7 @@
 
 .appointmentDetails .appointmentContent {
   display: grid;
-  grid-template-columns: 0.2fr 1.2fr 1.2fr 0.5fr 1.2fr 1.2fr 0.5fr 0.5fr;
+  grid-template-columns: 0.2fr 1.2fr 1.2fr 0.4fr 1.5fr 1.2fr 0.5fr 0.5fr;
   align-items: center;
   gap: 5px;
   padding: 10px 20px;
@@ -57,7 +57,10 @@
   height: 52px;
   border-radius: 50%;
   object-fit: cover;
+  background: #eaefff;
 }
-.canelIcon {
+.appointmentContent .cancelIcon {
   cursor: pointer;
+  background: none;
+  
 }
