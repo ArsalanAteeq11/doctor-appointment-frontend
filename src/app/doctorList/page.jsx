@@ -44,25 +44,25 @@ const DoctorList = () => {
       <p>Browse through the doctor’s specialist.</p>
       <div className="doctor-list-subCont">
         <div className="filter-section">
-        <button className={selectedSpecialty === "General physician" && "selected"} onClick={() => handleSpecialtyClick("General physician")}>
+        <button className={selectedSpecialty === "General physician" ? "selected" : ""} onClick={() => handleSpecialtyClick("General physician")}>
             General physician
           </button>
-        <button className={selectedSpecialty === "Cardiologist" && "selected"} onClick={() => handleSpecialtyClick("Cardiologist")}>
+        <button className={selectedSpecialty === "Cardiologist" ? "selected" : ""} onClick={() => handleSpecialtyClick("Cardiologist")}>
         Cardiologist
           </button>
-          <button className={selectedSpecialty === "Gynecologist" && "selected"}  onClick={() => handleSpecialtyClick("Gynecologist")}>
+          <button className={selectedSpecialty === "Gynecologist" ? "selected" : ""}  onClick={() => handleSpecialtyClick("Gynecologist")}>
             Gynecologist
           </button>
-          <button className={selectedSpecialty === "Dermatologist" && "selected"} onClick={() => handleSpecialtyClick("Dermatologist")}>
+          <button className={selectedSpecialty === "Dermatologist" ? "selected" : ""} onClick={() => handleSpecialtyClick("Dermatologist")}>
             Dermatologist
           </button>
-          <button className={selectedSpecialty === "Pediatricians" && "selected"}  onClick={() => handleSpecialtyClick("Pediatricians")}>
+          <button className={selectedSpecialty === "Pediatricians" ? "selected" : ""}  onClick={() => handleSpecialtyClick("Pediatricians")}>
             Pediatricians
           </button>
-          <button className={selectedSpecialty === "Neurologist" && "selected"}  onClick={() => handleSpecialtyClick("Neurologist")}>
+          <button className={selectedSpecialty === "Neurologist" ? "selected" : ""}  onClick={() => handleSpecialtyClick("Neurologist")}>
             Neurologist
           </button>
-          <button className={selectedSpecialty === "Gastroenterologist" && "selected"}  onClick={() => handleSpecialtyClick("Gastroenterologist")}>
+          <button className={selectedSpecialty === "Gastroenterologist" ? "selected" : ""}  onClick={() => handleSpecialtyClick("Gastroenterologist")}>
             Gastroenterologist
           </button>
           <button onClick={() => setSelectedSpecialty("")}>

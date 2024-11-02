@@ -2,6 +2,8 @@
 import { combineReducers, configureStore } from '@reduxjs/toolkit';
 import authReducer from './userSlice';
 import doctorReducer from './doctorSlice';
+import appointmentReducer from './appointmentSlice';
+import patientReducer from './patientSlice';
 import {
   persistReducer,
   FLUSH,
@@ -21,7 +23,9 @@ const persistConfig = {
 
 const rootReducer = combineReducers({
   auth: authReducer,
-  doctor : doctorReducer
+  doctor : doctorReducer,
+  appointment : appointmentReducer,
+  patient:patientReducer
 });
 const persistedReducer = persistReducer(persistConfig, rootReducer);
 

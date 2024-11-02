@@ -3,6 +3,9 @@ import AdminLayout from "@/components/AdminLayout/AdminLayout";
 import "./appointments.css";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import toast from "react-hot-toast";
+import { useDispatch, useSelector } from "react-redux";
+import { setAppointments } from "@/redux/appointmentSlice";
 
 const appointments = [
   {
@@ -43,24 +46,21 @@ const appointments = [
 const page = () => {
 
   const url = "http://localhost:4000"
-  const [appointments,setAppointments] = useState([])
-  useEffect(()=>{
-    const fetchAppointments = async () =>{
-      try {
-        const res = await axios.get(`${url}/appointment/allAppointments`)
-        if (res?.data?.success) {
-          console.log(res?.data?.appointments)
-          setAppointments(res?.data?.appointments)
-        }
-        else{
-          console.log(res?.data?.message)
-        }
-      } catch (error) {
-        console.log(error)
+  const dispatch = useDispatch()
+  const {appointments} = useSelector(store=>store.appointment)
+  const handleDeleteAppointment = async (appointmentId) =>{
+    try {
+      const res = await axios.delete(`${url}/appointment/delete/${appointmentId}`)
+      if (res?.data?.success) {
+        toast.success(res?.data?.message || "Appointment deleted.")
+        dispatch(setAppointments(appointments.filter((appointment)=>appointment._id !== appointmentId)))
+      }else{
+        toast.error(res?.data?.message)
       }
+    } catch (error) {
+      console.log(error)
     }
-    fetchAppointments()
-  },[])
+  }
   return (
     <AdminLayout>
       <div className="appointmentCont">
@@ -104,6 +104,7 @@ const page = () => {
                     src="/assets/assets_admin/cancel_icon.svg"
                     alt=""
                     className="cancelIcon"
+                    onClick={()=>handleDeleteAppointment(appointment?._id)}
                   />
                 </div>
               );
