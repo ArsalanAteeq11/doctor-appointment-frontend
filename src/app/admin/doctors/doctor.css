@@ -80,6 +80,7 @@
 
 .doctor-card:hover .delete-icon {
   display: block;
+  z-index: 10;
 }
 
 /* Modal Styles */

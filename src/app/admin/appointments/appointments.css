@@ -2,65 +2,81 @@
   padding: 40px 50px;
   min-height: 100vh;
 }
+
 .appointmentCont h1 {
   font-family: Outfit;
   font-size: 22px;
   font-weight: 500;
-  line-height: 27.72px;
-  text-align: left;
   color: #323232;
 }
-.appointmentCont .appointmentDetails {
-  height: auto;
+
+.appointmentDetails {
   width: 95%;
   border-radius: 5px;
   border: 1px solid #d8d8d8;
   background: #ffffff;
   margin-top: 10px;
+  overflow-x: auto;
 }
 
-.appointmentDetails .appointmentTitles {
-  display: grid;
-  grid-template-columns: 0.2fr 1.2fr 1.2fr 0.4fr 1.5fr 1.2fr 0.5fr 0.5fr;
-  align-items: center;
-  gap: 5px;
-  padding: 10px 20px;
-  border-bottom: 1px solid #d8d8d8;
+.appointmentDetails table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.appointmentDetails th,
+.appointmentDetails td {
+  padding: 12px;
+  text-align: left;
   font-family: Outfit;
   font-size: 18px;
-  font-weight: 500;
-  line-height: 22.68px;
   color: #323232;
+  border-bottom: 1px solid #d8d8d8;
+  border-right: 1px solid #d8d8d8;
 }
 
-.appointmentDetails .appointmentContent {
-  display: grid;
-  grid-template-columns: 0.2fr 1.2fr 1.2fr 0.4fr 1.5fr 1.2fr 0.5fr 0.5fr;
-  align-items: center;
-  gap: 5px;
-  padding: 10px 20px;
-  border-bottom: 1px solid #d8d8d8;
-  font-family: Outfit;
-  font-size: 18px;
-  font-weight: 400;
-  line-height: 22.68px;
-  color: #696b80;
+.appointmentDetails th {
+  font-weight: 500;
 }
-.appointmentContent .patientProfile,
-.doctorProfile {
+
+.appointmentDetails td {
+  font-weight: 400;
+  color: #696b80;
+  font-size: 16px;
+}
+
+.patientProfile, .doctorProfile {
   display: flex;
   align-items: center;
-  gap: 3px;
+  gap: 8px;
 }
-.appointmentContent img {
-  width: 52px;
-  height: 52px;
+
+.patientProfile img,
+.doctorProfile img {
+  width: 40px;
+  height: 40px;
   border-radius: 50%;
   object-fit: cover;
   background: #eaefff;
+  transition: all 0.2s ease;
 }
-.appointmentContent .cancelIcon {
+
+.doctorProfile p:hover{
+ color: blue;
+ text-decoration: underline;
+}
+
+.cancelIcon {
   cursor: pointer;
-  background: none;
-  
+  width: 40px;
+  height: 40px;
+  object-fit: cover;
 }
+
+.appointmentDetails th:last-child,
+.appointmentDetails td:last-child {
+  border-right: none;
+}
+
+
+  

@@ -1,40 +1,22 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, {  useState } from "react";
 import "./doctorList.css"; // separate CSS for styling
 import { useRouter } from "next/navigation";
-import axios from "axios";
-import { useDispatch, useSelector } from "react-redux";
-import { setDoctors } from "@/redux/doctorSlice";
+import {  useSelector } from "react-redux";
 
 
 const DoctorList = () => {
   const router = useRouter();
   const [selectedSpecialty, setSelectedSpecialty] = useState("");
-  const dispatch = useDispatch()
   const url = "http://localhost:4000"
+  const {doctors} = useSelector(store=>store.doctor)
 
   const handleSpecialtyClick = (specialty) => {
     setSelectedSpecialty(specialty);
   };
 
-  useEffect(()=>{
-    const fetchDoctors = async () =>{
-      try {
-        const res = await axios.get(`${url}/user/alldoctors`)
-        if (res?.data?.success) {
-          dispatch(setDoctors(res?.data?.doctors))
-        }
-        else{
-          console.log(res?.data?.message)
-        }
-      } catch (error) {
-        console.log(error)
-      }
-    }
-    fetchDoctors()
-  },[dispatch])
+ 
 
-  const {doctors} = useSelector(store=>store.doctor)
 
   const filteredDoctors = selectedSpecialty
     ? doctors?.filter((doctor) => doctor.specialty === selectedSpecialty)

@@ -6,47 +6,15 @@ import axios from "axios";
 import toast from "react-hot-toast";
 import { useDispatch, useSelector } from "react-redux";
 import { setAppointments } from "@/redux/appointmentSlice";
+import { useRouter } from "next/navigation";
 
-const appointments = [
-  {
-    sno: 1,
-    patientImg: "/assets/assets_frontend/profile_pic.png",
-    patientName: "Richard James",
-    department: "Richard James",
-    age: "24",
-    datetime: "24th July, 2024, 10:AM",
-    doctorImg: "/assets/assets_frontend/profile_pic.png",
-    doctorName: "Richard James",
-    fees: "$30",
-  },
-  {
-    sno: 2,
-    patientImg: "/assets/assets_frontend/profile_pic.png",
-    patientName: "Richard James",
-    department: "Richard James",
-    age: "24",
-    datetime: "24th July, 2024, 10:AM",
-    doctorImg: "/assets/assets_frontend/profile_pic.png",
-    doctorName: "Richard James",
-    fees: "$30",
-  },
-  {
-    sno: 3,
-    patientImg: "/assets/assets_frontend/profile_pic.png",
-    patientName: "Richard James",
-    department: "Richard James",
-    age: "24",
-    datetime: "24th July, 2024, 10:AM",
-    doctorImg: "/assets/assets_frontend/profile_pic.png",
-    doctorName: "Richard James",
-    fees: "$30",
-  },
-];
+
 
 const page = () => {
 
   const url = "http://localhost:4000"
   const dispatch = useDispatch()
+  const router = useRouter()
   const {appointments} = useSelector(store=>store.appointment)
   const handleDeleteAppointment = async (appointmentId) =>{
     try {
@@ -64,57 +32,73 @@ const page = () => {
   return (
     <AdminLayout>
       <div className="appointmentCont">
-        <h1>All Appointments</h1>
-        <div className="appointmentDetails">
-          <div className="appointmentTitles">
-            <span>#</span>
-            <span>Patient</span>
-            <span>Department</span>
-            <span>Age</span>
-            <span>Date & Time</span>
-            <span>Doctor</span>
-            <span>Fees</span>
-          </div>
-          {appointments?.length ? (
-             appointments?.map((appointment, index) => {
-              const { date, day, createdAt, patient, doctor } = appointment;
-
-              // Extract the year from `createdAt`
-              const year = new Date(createdAt).getFullYear();
-            
-              // Combine into formatted string
-              const formattedDate = `${date}, ${day}, ${year}`;
-            
-              return (
-                <div key={appointment?._id} className="appointmentContent">
-                  <span>{index + 1}</span>
+  <h1>All Appointments</h1>
+  <div className="appointmentDetails">
+    <table>
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Patient</th>
+          <th>Department</th>
+          <th>Age</th>
+          <th>Date & Time</th>
+          <th>Doctor</th>
+          <th>Fees</th>
+          <th>Action</th> 
+        </tr>
+      </thead>
+      <tbody>
+        {appointments?.length ? (
+          appointments.map((appointment, index) => {
+            const { date, day, createdAt, patient, doctor } = appointment;
+            const year = new Date(createdAt).getFullYear();
+            const formattedDate = `${date}, ${day}, ${year}`;
+            return (
+              <tr key={appointment?._id}>
+                <td>{index + 1}</td>
+                <td>
                   <div className="patientProfile">
-                    <img src={patient ? `${url}/images/${patient.profilePhoto}` : null} alt="" />
-                    <span>{patient?.username}</span>
+                    <img
+                      src={patient ? `${url}/images/${patient.profilePhoto}` : null}
+                      alt=""
+                    />
+                    <p>{patient?.username}</p>
                   </div>
-                  <span>{doctor?.specialty}</span>
-                  <span>{patient?.age}</span>
-                  <span>{formattedDate} | {appointment?.timeSlot}</span> {/* Display the formatted date */}
+                </td>
+                <td>{doctor?.specialty}</td>
+                <td>{patient?.age}</td>
+                <td>{formattedDate} | {appointment?.timeSlot}</td>
+                <td>
                   <div className="doctorProfile">
-                    <img src={doctor?.profilePhoto ? `${url}/images/${doctor.profilePhoto}` : null} alt="" />
-                    <span>{doctor?.username}</span>
+                    <img
+                      src={doctor?.profilePhoto ? `${url}/images/${doctor.profilePhoto}` : null}
+                      alt=""
+                    />
+                    <p onClick={()=>router.push(`/doctorList/${doctor?._id}`)}>{doctor?.username}</p>
                   </div>
-                  <span>${doctor?.fees}</span>
+                </td>
+                <td>${doctor?.fees}</td>
+                <td>
                   <img
                     src="/assets/assets_admin/cancel_icon.svg"
                     alt=""
                     className="cancelIcon"
-                    onClick={()=>handleDeleteAppointment(appointment?._id)}
+                    onClick={() => handleDeleteAppointment(appointment?._id)}
                   />
-                </div>
-              );
-            })
-            
-          )  : (
-            <p>No appointments found.</p>
-          )}
-        </div>
-      </div>
+                </td>
+              </tr>
+            );
+          })
+        ) : (
+          <tr>
+            <td colSpan="8">No appointments found.</td>
+          </tr>
+        )}
+      </tbody>
+    </table>
+  </div>
+</div>
+
     </AdminLayout>
   );
 };

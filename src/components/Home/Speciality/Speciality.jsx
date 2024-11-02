@@ -1,8 +1,8 @@
 import "./speciality.css";
-const Specialities = () => {
+const Specialities = ({selectedSpecialty,setSelectedSpecialty}) => {
   const specialities = [
     {
-      name: "General Physician",
+      name: "General physician",
       icon: "/assets/assets_frontend/General_physician.svg",
     },
     {
@@ -37,8 +37,8 @@ const Specialities = () => {
       </p>
       <div className="speciality-list">
         {specialities.map((speciality, index) => (
-          <div key={index} className="speciality-item">
-            <img src={speciality.icon} alt={speciality.name} />
+          <div key={index} className="speciality-item " onClick={()=>setSelectedSpecialty(speciality.name)}>
+            <img src={speciality.icon} alt={speciality.name} className={selectedSpecialty === speciality.name ? "selected" : ""} />
             <span>{speciality.name}</span>
           </div>
         ))}

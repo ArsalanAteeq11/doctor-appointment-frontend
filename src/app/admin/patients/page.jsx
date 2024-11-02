@@ -31,12 +31,20 @@ const page = () => {
       <div className="appointmentCont">
         <h1>All Patients</h1>
         <div className="appointmentDetails">
-          <div className="appointmentTitles">
-            <span>#</span>
-            <span>Patient</span>
-            <span>Age</span>
-            <span>Date & Birth</span>
-          </div>
+          <table>
+
+          <thead>
+            <tr>
+
+            <th>#</th>
+            <th>Patient</th>
+            <th>Age</th>
+            <th>Date & Birth</th>
+            <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+
           {patients?.map((patient, index) => {
             const { dob } = patient;
             const patientDob = new Date(dob);
@@ -52,8 +60,10 @@ const page = () => {
             const formattedDate = `${day}, ${month}, ${year}`;
 
             return (
-              <div key={patient?._id} className="appointmentContent">
-                <span>{index + 1}</span>
+              <tr key={patient?._id} className="appointmentContent">
+                <td>{index + 1}</td>
+                <td>
+
                 <div className="patientProfile">
                   <img
                     src={
@@ -65,17 +75,23 @@ const page = () => {
                   />
                   <span>{patient?.username}</span>
                 </div>
-                <span>{patient?.age}</span>
-                <span>{formattedDate}</span>
+                </td>
+                <td>{patient?.age}</td>
+                <td>{formattedDate}</td>
+                <td>
+
                 <img
                   src="/assets/assets_admin/cancel_icon.svg"
                   alt=""
                   className="canelIcon"
                   onClick={()=>handleDeletePatient(patient?._id)}
                 />
-              </div>
+                </td>
+              </tr>
             );
           })}
+          </tbody>
+          </table>
         </div>
       </div>
     </AdminLayout>

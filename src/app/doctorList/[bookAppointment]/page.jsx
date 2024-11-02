@@ -112,6 +112,9 @@ const Page = () => {
       toast.error("Please select both a date and a time slot.");
       return;
     }
+    if(!user){
+      toast.error("Please login to book an Appointment")
+    }
     dispatch(setLoading(true))
     try {
       const appointmentData = {
@@ -122,6 +125,7 @@ const Page = () => {
 
         timeSlot: selectedTime,
       };
+      
 
       const response = await axios.post(`${url}/appointment/book`, appointmentData, { headers: { token } });
 
@@ -134,8 +138,7 @@ const Page = () => {
         toast.error(response.data.message || "Failed to book appointment.");
       }
     } catch (error) {
-      console.error(error);
-      toast.error("Error booking appointment.");
+      console.log(error);
     }finally{
       dispatch(setLoading(false))
 
