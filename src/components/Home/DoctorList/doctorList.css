@@ -48,6 +48,7 @@
   font-weight: 500;
   text-align: left;
   color: #1f2937;
+  margin: 0;
   margin-left: 5px;
 }
 
@@ -70,7 +71,6 @@
   color: #0fbf00;
   margin-left: 5px;
 }
-
 .btn-more {
   width: 214px;
   height: 60px;

@@ -1,5 +1,7 @@
+import { useRouter } from "next/navigation";
 import "./hero.css";
 const Hero = () => {
+  const router = useRouter()
   return (
     <div className="hero">
       <div className="hero-text">
@@ -11,7 +13,7 @@ const Hero = () => {
             schedule your appointment hassle-free.
           </p>
         </div>
-        <div className="btn">
+        <div className="btn" onClick={()=>router.push("/doctorList")}>
           <span>Book appointment</span>
           <img src="/assets/assets_frontend/arrow_icon.svg" alt="" />
         </div>

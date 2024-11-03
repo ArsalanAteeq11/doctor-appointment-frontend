@@ -1,134 +1,108 @@
-.profileContainer {
-  background: #eaefff;
-  min-height: 100vh;
-  padding: 40px;
+.profileCont{
+    width: 647px;
+height: 570px;
+margin: 40px;
 }
-.profileContainer h1 {
-  font-family: Outfit;
-  font-size: 30px;
-  font-weight: 400;
-  line-height: 37.8px;
-  text-align: left;
-  color: #4b5563;
+.profileCont .imgCont{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+
+    border-bottom: 1px solid #ADADAD;
 }
-.profileContainer h1 span {
-  font-family: Outfit;
-  font-size: 30px;
-  font-weight: 600;
-  line-height: 37.8px;
-  color: #171717;
-}
-.profileContainer .subCont {
-  width: 900px;
-  height: auto;
-  border-radius: 5px;
-  border: 1px solid #d8d8d8;
-  background: #ffffff;
-  margin-top: 10px;
-  padding: 20px 20px;
-}
-.subCont .profilePhoto {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  margin-bottom: 10px;
-}
-.profilePhoto img{
-  width: 98px;
-height: 98px;
-border-radius: 50%;
+.imgCont img{
+    height: 120px;
+width: 120px;
+border-radius: 8px;
 object-fit: cover;
 
 }
-.profilePhoto p {
-  font-family: Outfit;
-  font-size: 20px;
-  font-weight: 500;
-  line-height: 25.2px;
-  text-align: left;
-  color: #7b7b7b;
+.imgCont h1{
+    font-family: Outfit;
+font-size: 32px;
+font-weight: 500;
+line-height: 40.32px;
+text-align: left;
+color: #1F2937;
+
 }
 
-.doctorsDetail {
-  display: flex;
-  gap: 20px;
-  flex-wrap: wrap;
+.profileCont .userCont{
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
 }
-.doctorsDetail div {
-  display: flex;
-  flex-direction: column;
-  gap: 5px;
+.userCont .userInfo{
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin: 15px 0;
+}
+.userInfo h3{
+    font-family: Outfit;
+font-size: 16px;
+font-weight: 400;
+line-height: 20.16px;
+text-align: left;
+color: #797979;
+text-decoration: underline;
+}
+.userInfo div{
+    display: flex;
+    align-items: center;
+    gap: 35px;
+}
+.userInfo h4{
+    font-family: Outfit;
+font-size: 18px;
+font-weight: 400;
+line-height: 22.68px;
+text-align: left;
+color: #4B5563;
+
+}
+.userInfo p{
+    font-family: Outfit;
+font-size: 18px;
+font-weight: 400;
+line-height: 22.68px;
+text-align: left;
+color: #6B7280;
+
+}
+.userInfo .emailCont p,
+.phoneCont p{
+ color:  #3C96FF;
+ text-decoration: underline;
 }
 
-.doctorsDetail label {
-  font-family: Outfit;
-  font-size: 18px;
-  font-weight: 400;
-  line-height: 22.68px;
-  text-align: left;
-  color: #5d607d;
-}
-.doctorsDetail input {
-  width: 400px;
-  height: 46px;
-  border-radius: 5px;
-  border: 1px solid #c1c1c1;
-  font-family: Outfit;
-  font-size: 18px;
-  font-weight: 400;
-  line-height: 22.68px;
-  text-align: left;
-  padding-left: 5px;
-  outline: none;
-}
-.doctorsDetail input::placeholder {
-  color: #a2a2a2;
-}
-.doctorsDetail select {
-  width: 400px;
-  height: 46px;
-  border-radius: 5px;
-  border: 1px solid #c1c1c1;
-  padding-left: 5px;
-  font-family: Outfit;
-  font-size: 18px;
-  font-weight: 400;
-  line-height: 22.68px;
-  text-align: left;
-  outline: none;
-}
-.doctorsDetail textarea {
-  width: 820px;
-  padding: 5px;
-  height: 150px;
-  border-radius: 5px;
-  border: 1px solid #c1c1c1;
-  font-family: Outfit;
-  font-size: 18px;
-  font-weight: 400;
-  line-height: 22.68px;
-  text-align: left;
-  outline: none;
-}
-.doctorsDetail textarea::placeholder {
-  font-family: Outfit;
-  font-size: 18px;
-  font-weight: 400;
-  line-height: 22.68px;
-  text-align: left;
-  outline: none;
-  color: #a2a2a2;
+.userInfo .addressCont p{
+    font-family: Outfit;
+font-size: 18px;
+font-weight: 400;
+line-height: 22.68px;
+text-align: left;
+color: #6B7280;
+text-decoration: none;
 }
 
-.btn {
-  font-family: "Outfit";
-  width: 195px;
-  height: 54px;
-  border-radius: 47px;
-  background: #5f6fff;
-  border: none;
-  color: #ffffff;
-  font-size: 18px;
-  cursor: pointer;
-  margin: 10px 0;
+.profileCont button{
+    width: 127px;
+height: 54px;
+border-radius: 47px;
+border: 1px solid #4B5563;
+font-family: Outfit;
+font-size: 18px;
+font-weight: 400;
+line-height: 43px;
+color: #4B5563;
+background: #ffffff;
+cursor: pointer;
+transition: all 0.2s ease-in-out;
+
+}
+button:hover{
+    
+border: 1px solid #5F6FFF;
+color: #5F6FFF;
 }

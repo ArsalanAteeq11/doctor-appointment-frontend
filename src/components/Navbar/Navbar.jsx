@@ -43,10 +43,10 @@ const Navbar = () => {
       </ul>
       {user ? (
         <div className="imgCont">
-        <img src={user?.profilePhoto ? `${url}/images/${user?.profilePhoto}` :  "/assets/assets_frontend/profile_pic.png"} className="img"/>
+        <img src={user?.profilePhoto ? `${url}/images/${user?.profilePhoto}` : "/assets/assets_admin/upload_area.svg"} className="img"/>
         <div className="dropdownCont">
           <ul>
-            <li onClick={()=>router.push("/profile")}>My Profile</li>
+            <li onClick={()=>router.push("/editProfile")}>My Profile</li>
             <li onClick={()=>router.push("/appointments")}>My Appointments</li>
             <li onClick={logout} >Logout</li>
           </ul>
