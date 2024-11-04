@@ -5,9 +5,11 @@ import { useEffect, useRef, useState } from "react";
 import { setLoading, setUser } from "@/redux/userSlice";
 import axios from "axios";
 import toast from "react-hot-toast";
-const AddDoctorPage = () => {
+const EditProfile = () => {
   const dispatch = useDispatch();
+  const url = "http://localhost:4000/images/"
   const { loading, user, token } = useSelector((store) => store.auth);
+  console.log("user",user)
   const patient = user?.role === "patient";
   const imageRef = useRef();
 
@@ -28,26 +30,62 @@ const AddDoctorPage = () => {
   });
 
   const [image, setImage] = useState(null); // For image preview
- 
+  console.log("image",image)
+   
+  // Helper function to convert from dd/mm/yyyy to yyyy-mm-dd (for input display)
+// Helper function to convert date to yyyy-mm-dd for input display
+const formatToInputDate = (dob) => {
+  if (!dob) return ""; // Return empty if dob is undefined or empty
+  
+  let date;
+  // Check if the date is in ISO format
+  if (dob.includes("T")) {
+    date = new Date(dob); // Parse as ISO date
+  } else {
+    // If in dd/mm/yyyy format, split and reassemble
+    const [day, month, year] = dob.split('/');
+    if (day && month && year) {
+      date = new Date(`${year}-${month}-${day}`);
+    } else {
+      return ""; // Return empty if format is incorrect
+    }
+  }
+
+  // Format as yyyy-mm-dd
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const day = String(date.getDate()).padStart(2, '0');
+  return `${year}-${month}-${day}`;
+};
+
+
+
   useEffect(() => {
     if (user) {
+      // const profilePhotoUrl = user.profilePhoto
+      // ? user.profilePhoto.startsWith("http")
+      //   ? user.profilePhoto
+      //   : `${url}${user.profilePhoto}` // Add base URL if it’s just a filename
+      // : "/default/profile_pic.png"; 
       setFormData({
         name: user.username || "",
         specialty: user.specialty || "",
         education: user.education || "",
-        addressLine1: user.address.addressLine1 || "",
-        addressLine2: user.address.addressLine2 || "",
+        addressLine1: user.address.address1 || "",
+        addressLine2: user.address.address2 || "",
         yearsOfExperience: user.experience || "",
         gender: user.gender || "",
         fees: user.fees || "",
         phone: user.phone || "",
-        dob: user.dob || "",
+        dob: user.dob ? formatToInputDate(user.dob) :  "",
         about: user.about || "",
         age: user.age || "",
         language: user.language || "",
       });
+      setImage(image)
     }
   }, [user]);
+  console.log("formData",formData)
   const handleChange = (e) => {
     setFormData({
       ...formData,
@@ -69,10 +107,15 @@ const AddDoctorPage = () => {
     form.append("fees", formData.fees);
     form.append("phone", formData.phone);
     form.append("dob", formData.dob);
+    form.append("gender",formData.gender)
     form.append("age",formData.age)
     form.append("about", formData.about);
-    form.append("language", formData.language); // Added languages
-    form.append("image", image);
+    form.append("language", formData.language);
+    if (image) {
+      form.append("image", image);
+    } else {
+      form.append("image", user.profilePhoto); // Append the existing image if no new image is selected
+    }
     
     try {
       const response = await axios.post(
@@ -81,6 +124,7 @@ const AddDoctorPage = () => {
         { headers: { token } }
       );
       if (response.data.success) {
+        console.log("user", response?.data?.user)
         const updatedProfile = {
           ...user,
           username: response?.data?.user?.username,
@@ -93,8 +137,13 @@ const AddDoctorPage = () => {
           yearsOfExperience: response?.data?.user?.experience, // Updated profile
           language: response?.data?.user?.language,
           phone: response?.data?.user?.phone,
+          address: {
+            address1: response?.data?.user?.address?.addressLine1,
+            address2: response?.data?.user?.address?.addressLine2 ,
+          },
           dob: response?.data?.user?.dob,
-          age:response?.data?.user?.age
+          age:response?.data?.user?.age,
+          gender:response?.data?.user?.gender
         };
         dispatch(setLoading(false));
         dispatch(setUser(updatedProfile));
@@ -141,8 +190,8 @@ const AddDoctorPage = () => {
           <img
             src={
               image
-                ? URL.createObjectURL(image)
-                : "/assets/assets_admin/upload_area.svg"
+                ?  URL.createObjectURL(image)
+                : user?.profilePhoto ? `${url}${user?.profilePhoto}` : "/assets/assets_frontend/upload_area.png"
             }
             alt="Doctor Preview"
             className="previewImage"
@@ -351,4 +400,4 @@ const AddDoctorPage = () => {
   );
 };
 
-export default AddDoctorPage;
+export default EditProfile;
