@@ -1,7 +1,7 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import "./navbar.css";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import Link from "next/link";
 import { useDispatch, useSelector } from "react-redux";
 import { setToken, setUser } from "@/redux/userSlice";
@@ -9,10 +9,10 @@ import toast from "react-hot-toast";
 
 const Navbar = () => {
   const router = useRouter();
+  const pathname = usePathname()
   const dispatch = useDispatch()
   const url = "http://localhost:4000"
   const { user } = useSelector((store) => store.auth);
-
   const logout = () =>{
     localStorage.removeItem("token")
     dispatch(setUser(null))
@@ -28,25 +28,25 @@ const Navbar = () => {
         </Link>
       </div>
       <ul className="menu">
-        <li>
-          <a href="/">Home</a>
+        <li className={pathname === "/" ? "selected" : ""} onClick={()=>router.push("/")}>Home
         </li>
-        <li>
-          <a href="/doctorList">All Doctors</a>
+        <li className={pathname === "/doctorList" ? "selected" : ""} onClick={()=>router.push("/doctorList")}>All Doctors
         </li>
-        <li>
-          <a href="/about">About</a>
+        <li className={pathname === "/about" ? "selected" : ""} onClick={()=>router.push("/about")}>About
         </li>
-        <li>
-          <a href="/contact">Contact</a>
+        <li className={pathname === "/contact" ? "selected" : ""} onClick={()=>router.push("/contact")}>Contact
         </li>
+        {user?.role === "admin" && 
+        <li className={pathname === "/admin" ? "selected" : ""} onClick={()=>router.push("/admin")}>Admin
+        </li>
+        }
       </ul>
       {user ? (
         <div className="imgCont">
         <img src={user?.profilePhoto ? `${url}/images/${user?.profilePhoto}` : "/assets/assets_admin/upload_area.svg"} className="img"/>
         <div className="dropdownCont">
           <ul>
-            <li onClick={()=>router.push("/editProfile")}>My Profile</li>
+            <li onClick={()=> router.push(user?.profilePhoto ? "/profile" : "/editProfile")}>My Profile</li>
             <li onClick={()=>router.push("/appointments")}>My Appointments</li>
             <li onClick={logout} >Logout</li>
           </ul>

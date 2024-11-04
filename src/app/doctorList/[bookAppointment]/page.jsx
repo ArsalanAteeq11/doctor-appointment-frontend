@@ -81,13 +81,13 @@ const Page = () => {
     setSelectedDay(dayItem);
 
     // Filter appointments for the selected day
-    const bookedOnSelectedDay = appointments.filter(
-      (appointment) => appointment.date === dayItem.date
-    );
+    // const bookedOnSelectedDay = appointments.filter(
+    //   (appointment) => appointment.date === dayItem.date
+    // );
 
-    // Get booked time slots from filtered appointments
-    const bookedTimes = bookedOnSelectedDay.map((appointment) => appointment.timeSlot);
-    setBookedSlots(bookedTimes); // Store booked time slots
+    // // Get booked time slots from filtered appointments
+    // const bookedTimes = bookedOnSelectedDay.map((appointment) => appointment.timeSlot);
+    // setBookedSlots(bookedTimes); // Store booked time slots
   };
   useEffect(()=>{
   
@@ -134,18 +134,18 @@ const Page = () => {
         setSelectedDay(null);
         setSelectedTime(null);
 
-      } else {
-        toast.error(response.data.message || "Failed to book appointment.");
-      }
+      } 
     } catch (error) {
       console.log(error);
+      toast.error(error?.response?.data?.message || "Failed to book appointment.");
+
     }finally{
       dispatch(setLoading(false))
 
     }
   };
 
-  const filteredDoctors = doctor && doctors.filter((doc)=>doc.specialty === doctor.specialty)
+  const filteredDoctors = doctor && doctors.filter((doc)=>doc.specialty === doctor.specialty && doc._id !== doctor._id)
   console.log("filteredDoctors", filteredDoctors)
   console.log("doctors",doctors)
 

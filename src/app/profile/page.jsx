@@ -36,8 +36,8 @@ const page = () => {
               </div>
               <div className='addressCont'>
                 <h4>Address:</h4>
-                <p>{user?.address?.addressLine1} <br />
-                {user?.address?.addressLine2}</p>
+                <p>{user?.address?.address1} <br />
+                {user?.address?.address2}</p>
               </div>
         </div>
         <div className='userInfo'>

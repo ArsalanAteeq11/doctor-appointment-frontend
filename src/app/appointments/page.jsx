@@ -4,10 +4,11 @@ import "./appointment.css";
 import { useSelector } from "react-redux";
 import axios from "axios";
 import toast from "react-hot-toast";
+import { useRouter } from "next/navigation";
 
 const page = () => {
   const [appointments, setAppointments] = useState([]);
-  console.log(appointments);
+  const router = useRouter()
   const { token, user } = useSelector((store) => store.auth);
   const url = "http://localhost:4000";
 
@@ -97,7 +98,7 @@ const page = () => {
           {appointments.length === 0 ? (
             <p>No appointments found</p>
           ) : (
-            appointments.filter((appointment)=>appointment.status !== "cancelled").map((appointment) => (
+            appointments.filter((appointment)=>user?.role === "doctor" ? appointment.status !== "cancelled" : appointment).map((appointment) => (
               <div className="appointmentsDetail"  key={appointment?._id}>
               
               <div className="appointmentContent">
@@ -106,7 +107,7 @@ const page = () => {
                     user?.role === "patient"
                       ? `${url}/images/${appointment?.doctor?.profilePhoto}`
                       : `${url}/images/${appointment?.patient?.profilePhoto}`
-                  } alt="" />
+                  } alt="" onClick={()=>{user?.role === "patient" && router.push(`/doctorList/${appointment?.doctor?._id}`)}} />
                 <div className="doctorDetails">
                   {user?.role === "patient" ? (
                      <h2>Dr. {appointment?.doctor?.username}</h2>
@@ -130,8 +131,9 @@ const page = () => {
                   <button className="status" disabled={appointment?.status === "approved"} onClick={()=>{handleApproveAppointment(appointment?._id)}}>{appointment?.status === "pending" ? "Approve" : "Approved"}</button>
                 )}
               
-
+              {appointment?.status !== "cancelled" && 
               <button className="cancelBtn" onClick={()=>handleCancelAppointment(appointment?._id)}>Cancel appointment</button>
+              }
             </div>
 
           

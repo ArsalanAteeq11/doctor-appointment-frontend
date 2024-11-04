@@ -19,42 +19,37 @@ const EditProfile = () => {
     education: "",
     addressLine1: "",
     addressLine2: "",
-    yearsOfExperience: "", // New field for years of experience
+    yearsOfExperience: "", 
     gender: "",
     fees: "",
     phone: "",
     dob: "",
     about: "",
     age:"",
-    language: "", // New field for languages spoken
+    language: "", 
   });
 
-  const [image, setImage] = useState(null); // For image preview
-  console.log("image",image)
+  const [image, setImage] = useState(null); 
    
-  // Helper function to convert from dd/mm/yyyy to yyyy-mm-dd (for input display)
-// Helper function to convert date to yyyy-mm-dd for input display
 const formatToInputDate = (dob) => {
-  if (!dob) return ""; // Return empty if dob is undefined or empty
-  
+  if (!dob) return ""; 
+
   let date;
-  // Check if the date is in ISO format
   if (dob.includes("T")) {
-    date = new Date(dob); // Parse as ISO date
+    date = new Date(dob); 
   } else {
-    // If in dd/mm/yyyy format, split and reassemble
     const [day, month, year] = dob.split('/');
     if (day && month && year) {
-      date = new Date(`${year}-${month}-${day}`);
+      date = new Date(Date.UTC(year, month - 1, day)); 
     } else {
-      return ""; // Return empty if format is incorrect
+      return ""; 
     }
   }
 
   // Format as yyyy-mm-dd
-  const year = date.getFullYear();
-  const month = String(date.getMonth() + 1).padStart(2, '0');
-  const day = String(date.getDate()).padStart(2, '0');
+  const year = date.getUTCFullYear();
+  const month = String(date.getUTCMonth() + 1).padStart(2, '0');
+  const day = String(date.getUTCDate()).padStart(2, '0');
   return `${year}-${month}-${day}`;
 };
 
@@ -62,17 +57,12 @@ const formatToInputDate = (dob) => {
 
   useEffect(() => {
     if (user) {
-      // const profilePhotoUrl = user.profilePhoto
-      // ? user.profilePhoto.startsWith("http")
-      //   ? user.profilePhoto
-      //   : `${url}${user.profilePhoto}` // Add base URL if it’s just a filename
-      // : "/default/profile_pic.png"; 
       setFormData({
         name: user.username || "",
         specialty: user.specialty || "",
         education: user.education || "",
-        addressLine1: user.address.address1 || "",
-        addressLine2: user.address.address2 || "",
+        addressLine1: user.address?.address1 || "",
+        addressLine2: user.address?.address2 || "",
         yearsOfExperience: user.experience || "",
         gender: user.gender || "",
         fees: user.fees || "",
@@ -103,7 +93,7 @@ const formatToInputDate = (dob) => {
     form.append("education", formData.education);
     form.append("addressLine1", formData.addressLine1);
     form.append("addressLine2", formData.addressLine2);
-    form.append("experience", formData.yearsOfExperience); // Added years of experience
+    form.append("experience", formData.yearsOfExperience); 
     form.append("fees", formData.fees);
     form.append("phone", formData.phone);
     form.append("dob", formData.dob);
@@ -114,7 +104,7 @@ const formatToInputDate = (dob) => {
     if (image) {
       form.append("image", image);
     } else {
-      form.append("image", user.profilePhoto); // Append the existing image if no new image is selected
+      form.append("image", user.profilePhoto); 
     }
     
     try {
@@ -134,7 +124,7 @@ const formatToInputDate = (dob) => {
           fees: response?.data?.user?.fees,
           profilePhoto: response?.data?.user?.profilePhoto,
           specialty: response?.data?.user?.specialty,
-          yearsOfExperience: response?.data?.user?.experience, // Updated profile
+          yearsOfExperience: response?.data?.user?.experience, 
           language: response?.data?.user?.language,
           phone: response?.data?.user?.phone,
           address: {
@@ -154,7 +144,7 @@ const formatToInputDate = (dob) => {
           education: "",
           addressLine1: "",
           addressLine2: "",
-          yearsOfExperience: "", // Reset years of experience
+          yearsOfExperience: "", 
           fees: "",
           about: "",
           language: "",
@@ -165,12 +155,11 @@ const formatToInputDate = (dob) => {
         setImage(null);
       } else {
         console.log(response?.data?.message);
+        toast.error(response?.data?.message)
       }
     } catch (error) {
-      toast.error(
-        "Error updating profile: " +
-        (error.response?.data?.message || error.message)
-      );
+      toast.error(error.response?.data?.message || error.message)
+      ;
     }
   };
   return (
@@ -210,7 +199,7 @@ const formatToInputDate = (dob) => {
               placeholder="Name"
               value={formData?.name}
               onChange={handleChange}
-
+              required
               
             />
           </div>

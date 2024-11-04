@@ -20,12 +20,30 @@
   gap: 20px;
 }
 
-.navbar .menu a {
-  text-decoration: none;
+.navbar .menu li {
+  list-style: none;
   color: #333;
+  cursor: pointer;
+  position: relative;
+  padding-bottom:4px ;
 }
-.navbar .menu li a:hover {
-  color: #556bf8;
+.menu li.selected::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%) scaleX(0);
+  width: 60%; /* Small fixed width for smoother transition */
+  height: 2px;
+  background-color: #007bff;
+  opacity: 0;
+  transition: transform 0.4s ease, opacity 0.2s ease; /* Smooth transition for both scale and opacity */
+}
+
+.menu li:hover::after,
+.menu li.selected::after {
+  transform: translateX(-50%) scaleX(1); /* Scale smoothly without width change */
+  opacity: 1; /* Fade in the line */
 }
 .imgCont{
   position: relative;
@@ -66,6 +84,8 @@
 .dropdownCont ul li:hover {
   color: #556bf8;
 }
+
+
 .btn-create-account {
   font-family: "Outfit";
   background-color: #556bf8;

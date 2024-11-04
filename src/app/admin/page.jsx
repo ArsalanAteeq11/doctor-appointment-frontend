@@ -19,6 +19,8 @@ const page = () => {
   const { appointments } = useSelector(store => store.appointment)
   const { doctorList } = useSelector(store => store.doctor)
   const { patients } = useSelector(store => store.patient)
+  const { user } = useSelector(store => store.auth)
+  
 
   const fetchAppointments = async () => {
     try {
@@ -76,10 +78,16 @@ const page = () => {
 
 
   useEffect(() => {
-    fetchAppointments()
-    fetchDoctors()
-    fetchPatients()
-  }, [dispatch])
+    // Check if the user is an admin
+    if (user?.role !== "admin") {
+      router.push("/"); // Redirect non-admins to the homepage or login
+      return;
+    }
+    // Fetch the data if user is admin
+    fetchAppointments();
+    fetchDoctors();
+    fetchPatients();
+  }, [dispatch, router]);
 
   const handleDeleteAppointment = async (appointmentId) =>{
     try {
