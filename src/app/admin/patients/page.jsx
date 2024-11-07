@@ -13,18 +13,33 @@ const page = () => {
   const url = "http://localhost:4000";
   const dispatch = useDispatch()
   const {patients} = useSelector(store=>store.patient)
-  const handleDeletePatient = async (patientId) => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedPatient, setSelectedPatient] = useState(null);
+
+
+  const handleDeleteClick = (patient) => {
+    setSelectedPatient(patient);
+    setIsModalOpen(true);
+  };
+
+  const handleDeleteConfirm = async () => {
     try {
 
-      const res = await axios.delete(`${url}/user/delete/${patientId}`);
+      const res = await axios.delete(`${url}/user/delete/${selectedPatient?._id}`);
       if (res?.data?.success) {
         
-        dispatch(setPatients(patients.filter((patient) => patient._id !== patientId)));
+        dispatch(setPatients(patients.filter((patient) => patient._id !== selectedPatient?._id)));
+        setIsModalOpen(false);
+        setSelectedPatient(null);
         toast.success("Patient deleted successfully.")
       }
     } catch (error) {
       console.log("Error deleting doctor", error);
     }
+  };
+  const handleModalClose = () => {
+    setIsModalOpen(false);
+    setSelectedPatient(null);
   };
   return (
     <AdminLayout>
@@ -84,14 +99,28 @@ const page = () => {
                   src="/assets/assets_admin/cancel_icon.svg"
                   alt=""
                   className="canelIcon"
-                  onClick={()=>handleDeletePatient(patient?._id)}
+                  onClick={()=>handleDeleteClick(patient)}
                 />
                 </td>
               </tr>
             );
           })}
+          
           </tbody>
           </table>
+          {isModalOpen && (
+          <div className="modal">
+            <div className="modal-content">
+              <p>Are you sure you want to permanently delete this patient?</p>
+              <button className="confirm-btn" onClick={handleDeleteConfirm}>
+                Yes, Delete
+              </button>
+              <button className="cancel-btn" onClick={handleModalClose}>
+                Cancel
+              </button>
+            </div>
+          </div>
+        )}
         </div>
       </div>
     </AdminLayout>

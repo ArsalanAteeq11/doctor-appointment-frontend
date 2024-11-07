@@ -25,19 +25,51 @@ const page = () => {
 
   const handleDeleteConfirm = async () => {
     try {
-
-      const res = await axios.delete(`${url}/user/delete/${selectedDoctor._id}`);
-      if (res?.data?.success) {
-        
-        dispatch(setDoctorList(doctorList.filter((doc) => doc._id !== selectedDoctor._id)));
+      // Fetch the doctor's appointments
+      const appointmentsRes = await axios.get(`${url}/appointment/doctorAppointments/${selectedDoctor._id}`);
+      const appointments = appointmentsRes.data.appointments;
+      console.log("appointments",appointments)
+  
+      const today = new Date();
+      const todayDate = today.getDate();
+      const todayMonth = today.toLocaleString('default', { month: 'short' });
+      const todayYear = today.getFullYear();
+  
+      // Check for active or future appointments
+      const hasActiveAppointments = appointments.some(appointment => {
+        const appointmentYear = new Date(appointment.createdAt).getFullYear();
+        return (
+          appointment.status === "approved" &&
+          (
+            // Check if the appointment date is today or in the future
+            (appointmentYear > todayYear) ||
+            (appointmentYear === todayYear && appointment.month > todayMonth) ||
+            (appointmentYear === todayYear && appointment.month === todayMonth && parseInt(appointment.date) >= todayDate)
+          )
+        );
+      });
+  
+      if (hasActiveAppointments) {
+        toast.error("Doctor cannot be deleted as they have active or future appointments.");
         setIsModalOpen(false);
         setSelectedDoctor(null);
-        toast.success("Doctor deleted successfully.")
+        return;
+      }
+  
+      // Proceed with deletion if no active appointments
+      const res = await axios.delete(`${url}/user/delete/${selectedDoctor._id}`);
+      if (res?.data?.success) {
+        dispatch(setDoctorList(doctorList.filter(doc => doc._id !== selectedDoctor._id)));
+        setIsModalOpen(false);
+        setSelectedDoctor(null);
+        toast.success("Doctor deleted successfully.");
       }
     } catch (error) {
       console.log("Error deleting doctor", error);
     }
   };
+  
+  
 
   const handleModalClose = () => {
     setIsModalOpen(false);

@@ -53,11 +53,11 @@ const getNextSevenDays = () => {
     const nextDate = new Date(today); // Clone the current date
     nextDate.setDate(today.getDate() + i); // Increment by i days
 
-    const day = nextDate.toLocaleString("en-US", { month: "short" }); // Get day name (Mon, Tue, etc.)
+    const month = nextDate.toLocaleString("en-US", { month: "short" }); // Get day name (Mon, Tue, etc.)
     const date = nextDate.getDate(); // Get day of the month
 
     // Store nextDate as a Date object, not a string
-    days.push({ day, dateObject: nextDate, date }); // Push both the date object and day of month
+    days.push({ month, dateObject: nextDate, date }); // Push both the date object and day of month
   }
   return days;
 };
@@ -120,7 +120,7 @@ const Page = () => {
       const appointmentData = {
         doctorId: id,
         patientId: user?._id,
-        day:selectedDay.day,
+        month:selectedDay.month,
         date: selectedDay.date,
 
         timeSlot: selectedTime,
@@ -182,7 +182,7 @@ const Page = () => {
         <div className="AppointmentDate">
           {getNextSevenDays().map((item, index) => (
             <div key={index} className={`AppointmentDay ${selectedDay?.date === item.date ? "selected" : ''}` }  onClick={() => handleDaySelection(item)}>
-              <span>{item.day}</span>
+              <span>{item.month}</span>
               <span>{item.date}</span>
             </div>
           ))}

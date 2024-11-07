@@ -11,16 +11,19 @@
   border-bottom: 1px solid #bdbdbd;
   padding-bottom: 20px;
 }
+
 .footer-left {
   display: flex;
   flex-direction: column;
   gap: 20px;
-  flex: 4;
+  max-width: 500px; /* Prevent it from growing too large on bigger screens */
 }
+
 .footer-left img {
   width: 217px;
   height: 46px;
 }
+
 .footer-left p {
   font-family: Outfit;
   font-size: 18px;
@@ -30,9 +33,13 @@
   color: #4b5563;
   max-width: 600px;
 }
+
 .footer-right {
   flex: 1;
+  display: flex;
+  flex-direction: column; /* Stack the content vertically */
 }
+
 .footer-right h2 {
   font-family: Outfit;
   font-size: 22px;
@@ -40,6 +47,7 @@
   color: #4b5563;
   margin-bottom: 20px;
 }
+
 .footer-right p {
   font-family: Outfit;
   font-size: 18px;
@@ -61,4 +69,66 @@
   font-weight: 400;
   line-height: 30px;
   color: #4b5563;
+}
+
+/* Media queries for responsiveness */
+@media (max-width: 768px) {
+  .footer-cont {
+    flex-direction: column;
+    align-items: center;
+    gap: 30px; /* Adjust the gap between sections */
+  }
+
+  .footer-left,
+  .footer-right {
+    flex: 1;
+    flex-direction: column;
+    align-items: center;
+    width: 100%; /* Make each section take full width */
+    text-align: center; 
+    /* Center text for smaller screens */
+  }
+   
+  .footer-left img {
+    width: 200px; /* Adjust image size for mobile */
+  }
+
+  .footer-right h2 {
+    font-size: 20px; /* Adjust heading size for smaller screens */
+  }
+
+  .footer-left p {
+    font-size: 18px; /* Adjust font size for better readability */
+    text-align: center;
+  }
+
+  .footer-right p {
+    font-size: 18px; /* Adjust font size for better readability */
+  }
+
+  .copyRight {
+    font-size: 16px; /* Adjust font size for better readability on small screens */
+  }
+}
+
+@media (max-width: 480px) {
+  .footer-cont {
+    padding: 20px; /* Add padding for small screens */
+  }
+
+  .footer-left p {
+    font-size: 16px; /* Reduce font size further */
+  }
+  .footer-right p {
+    font-size: 16px; /* Reduce font size further */
+  }
+
+  .footer-right h2 {
+    font-size: 20px; /* Reduce heading size */
+  }
+
+  .footer-left img {
+    width: 150px; /* Adjust image size further */
+  }
+
 }

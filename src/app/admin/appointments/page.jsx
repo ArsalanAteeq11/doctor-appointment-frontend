@@ -16,12 +16,25 @@ const page = () => {
   const dispatch = useDispatch()
   const router = useRouter()
   const {appointments} = useSelector(store=>store.appointment)
-  const handleDeleteAppointment = async (appointmentId) =>{
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedAppointment, setSelectedAppointment] = useState(null);
+
+
+  const handleDeleteClick = (appointment) => {
+    setSelectedAppointment(appointment);
+    setIsModalOpen(true);
+  };
+
+
+
+  const handleDeleteConfirm = async () =>{
     try {
-      const res = await axios.delete(`${url}/appointment/delete/${appointmentId}`)
+      const res = await axios.delete(`${url}/appointment/delete/${selectedAppointment?._id}`)
       if (res?.data?.success) {
         toast.success(res?.data?.message || "Appointment deleted.")
-        dispatch(setAppointments(appointments.filter((appointment)=>appointment._id !== appointmentId)))
+        dispatch(setAppointments(appointments.filter((appointment)=>appointment._id !== selectedAppointment?._id)))
+        setSelectedAppointment(null)
+        setIsModalOpen(false)
       }else{
         toast.error(res?.data?.message)
       }
@@ -29,6 +42,11 @@ const page = () => {
       console.log(error)
     }
   }
+
+  const handleModalClose = () => {
+    setIsModalOpen(false);
+    setSelectedAppointment(null);
+  };
   return (
     <AdminLayout>
       <div className="appointmentCont">
@@ -83,7 +101,7 @@ const page = () => {
                     src="/assets/assets_admin/cancel_icon.svg"
                     alt=""
                     className="cancelIcon"
-                    onClick={() => handleDeleteAppointment(appointment?._id)}
+                    onClick={() => handleDeleteClick(appointment)}
                   />
                 </td>
               </tr>
@@ -96,6 +114,19 @@ const page = () => {
         )}
       </tbody>
     </table>
+    {isModalOpen && (
+          <div className="modal">
+            <div className="modal-content">
+              <p>Are you sure you want to permanently delete this appointment?</p>
+              <button className="confirm-btn" onClick={handleDeleteConfirm}>
+                Yes, Delete
+              </button>
+              <button className="cancel-btn" onClick={handleModalClose}>
+                Cancel
+              </button>
+            </div>
+          </div>
+        )}
   </div>
 </div>
 

@@ -15,7 +15,9 @@ const page = () => {
   const dispatch = useDispatch()
   const router = useRouter()
   const [latestAppointments, setLatestAppointments] = useState([]);
-  console.log(latestAppointments)
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedAppointment, setSelectedAppointment] = useState(null);
+
   const { appointments } = useSelector(store => store.appointment)
   const { doctorList } = useSelector(store => store.doctor)
   const { patients } = useSelector(store => store.patient)
@@ -88,13 +90,22 @@ const page = () => {
     fetchDoctors();
     fetchPatients();
   }, [dispatch, router]);
+  
 
-  const handleDeleteAppointment = async (appointmentId) =>{
+  
+  const handleDeleteClick = (appointment) => {
+    setSelectedAppointment(appointment);
+    setIsModalOpen(true);
+  };
+
+  const handleDeleteConfirm = async () =>{
     try {
-      const res = await axios.delete(`${url}/appointment/delete/${appointmentId}`)
+      const res = await axios.delete(`${url}/appointment/delete/${selectedAppointment?._id}`)
       if (res?.data?.success) {
         toast.success(res?.data?.message || "Appointment deleted.")
-        dispatch(setAppointments(appointments.filter((appointment)=>appointment._id !== appointmentId)))
+        dispatch(setAppointments(appointments.filter((appointment)=>appointment._id !== selectedAppointment?._id)))
+        setSelectedAppointment(null)
+        setIsModalOpen(false)
       }else{
         toast.error(res?.data?.message)
       }
@@ -102,6 +113,11 @@ const page = () => {
       console.log(error)
     }
   }
+
+  const handleModalClose = () => {
+    setIsModalOpen(false);
+    setSelectedAppointment(null);
+  };
   return (
     <AdminLayout>
       <div className="dashboardCont">
@@ -154,12 +170,25 @@ const page = () => {
                     src="/assets/assets_admin/cancel_icon.svg"
                     alt=""
                     className="cancelIcon"
-                    onClick={()=>handleDeleteAppointment(appointment?._id)}
+                    onClick={()=>handleDeleteClick(appointment)}
                   />
                 </div>
               )})) : (
             <p>No Appointments Yet.</p>
           )}
+            {isModalOpen && (
+          <div className="modal">
+            <div className="modal-content">
+              <p>Are you sure you want to permanently delete this appointment?</p>
+              <button className="confirm-btn" onClick={handleDeleteConfirm}>
+                Yes, Delete
+              </button>
+              <button className="cancel-btn" onClick={handleModalClose}>
+                Cancel
+              </button>
+            </div>
+          </div>
+        )}
         </div>
       </div>
     </AdminLayout>

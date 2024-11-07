@@ -8,14 +8,18 @@ const page = () => {
     const {user} = useSelector(store=>store.auth)
     console.log(user)
 
-   const formattedDate = (dateStr) =>{
-    const date = new Date(dateStr);  // Date object mein convert karein
-    const day = date.getDate().toString().padStart(2, '0');  // 2-digit day
-    const month = date.toLocaleString("en-GB", { month: "short" });  // Short month name
-    const year = date.getFullYear();  // Year
-
-    return `${day}, ${month}, ${year}`;
-   }
+    const formattedDate = (dateStr) => {
+      const date = new Date(dateStr); // Parse the ISO date string
+    
+      // Extract date components
+      const day = String(date.getUTCDate()).padStart(2, '0');  // Get UTC day
+      const month = date.toLocaleString("en-GB", { month: "short", timeZone: "UTC" });  // Short month name in UTC
+      const year = date.getUTCFullYear();  // Get UTC year
+    
+      return `${day}, ${month}, ${year}`;
+    };
+    
+    
    
   return (
     <div className='profileCont'>

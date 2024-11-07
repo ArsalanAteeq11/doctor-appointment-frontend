@@ -5,13 +5,19 @@ import { useSelector } from "react-redux";
 import axios from "axios";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
+import { isAdmin, isDoctor, isPatient } from "@/utils/helper";
 
 const page = () => {
   const [appointments, setAppointments] = useState([]);
+  console.log("app",appointments)
   const router = useRouter()
   const { token, user } = useSelector((store) => store.auth);
+  console.log(user)
   const url = "http://localhost:4000";
 
+
+  const isAdminOrPatient = isAdmin(user) || isPatient(user)
+  const isdoctor = isDoctor(user)
   useEffect(() => {
     const fetchAppointments = async () => {
       try {
@@ -87,7 +93,7 @@ const page = () => {
     const year = appointment.createdAt.startsWith(currentYear.toString())
       ? currentYear
       : currentYear + 1; // Auto-increment year if past current year
-    return `${appointment.date}, ${appointment.day}, ${year}`;
+    return `${appointment.date}, ${appointment.month}, ${year}`;
   };
   
   return (
@@ -103,29 +109,28 @@ const page = () => {
               
               <div className="appointmentContent">
 
-                <img src={
-                    user?.role === "patient"
+                <img src={isAdminOrPatient
                       ? `${url}/images/${appointment?.doctor?.profilePhoto}`
                       : `${url}/images/${appointment?.patient?.profilePhoto}`
-                  } alt="" onClick={()=>{user?.role === "patient" && router.push(`/doctorList/${appointment?.doctor?._id}`)}} />
+                  } alt="" onClick={()=>{isAdminOrPatient && router.push(`/doctorList/${appointment?.doctor?._id}`)}} />
                 <div className="doctorDetails">
-                  {user?.role === "patient" ? (
+                  {isAdminOrPatient ? (
                      <h2>Dr. {appointment?.doctor?.username}</h2>
                   ) : (
                     <h2>{appointment?.patient?.username}</h2>
                   ) }
-                  <p>{user?.role !== "patient" &&  appointment?.doctor?.specialty }</p>
+                  <p>{isdoctor &&  appointment?.doctor?.specialty }</p>
                   <span>Address:</span>
                   <p>
-                    {user?.role === "patient" ?  appointment?.doctor?.address?.addressLine1 : appointment?.patient?.address?.addressLine1} <br /> {user?.role === "patient" ?  appointment?.doctor?.address?.addressLine2 : appointment?.patient?.address?.addressLine2}
+                    {isAdminOrPatient?  appointment?.doctor?.address?.addressLine1 : appointment?.patient?.address?.addressLine1} <br /> {isAdminOrPatient ?  appointment?.doctor?.address?.addressLine2 : appointment?.patient?.address?.addressLine2}
                   </p>
                   <p>Date & Time: {formatDate(appointment)} | {appointment?.timeSlot}</p>
-                  {user?.role !== "patient" && <p><span>Phone:</span>{appointment?.patient?.phone}</p>}
+                  {isdoctor && <p><span>Phone:</span>{appointment?.patient?.phone}</p>}
                   
                 </div>
               </div>
               <div className="btnCont">
-                {user?.role === "patient" ? (
+                {isAdminOrPatient ? (
                   <button className="status">{appointment?.status}</button>
                 ) : (
                   <button className="status" disabled={appointment?.status === "approved"} onClick={()=>{handleApproveAppointment(appointment?._id)}}>{appointment?.status === "pending" ? "Approve" : "Approved"}</button>

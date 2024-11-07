@@ -1,3 +1,4 @@
+/* Navbar Base Styles */
 .navbar {
   display: flex;
   justify-content: space-between;
@@ -8,24 +9,32 @@
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
-.navbar .logo img {
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex: 1;
+}
+
+.logo img {
   width: 217px;
   height: 46px;
   cursor: pointer;
 }
 
-.navbar .menu {
+.menu {
   list-style: none;
   display: flex;
   gap: 20px;
+  flex: 2;
+  justify-content: center;
 }
 
-.navbar .menu li {
-  list-style: none;
+.menu li {
   color: #333;
   cursor: pointer;
   position: relative;
-  padding-bottom:4px ;
+  padding-bottom: 4px;
 }
 .menu li.selected::after {
   content: "";
@@ -33,21 +42,38 @@
   bottom: 0;
   left: 50%;
   transform: translateX(-50%) scaleX(0);
-  width: 60%; /* Small fixed width for smoother transition */
+  width: 60%;
   height: 2px;
   background-color: #007bff;
   opacity: 0;
-  transition: transform 0.4s ease, opacity 0.2s ease; /* Smooth transition for both scale and opacity */
+  transition: transform 0.4s ease, opacity 0.2s ease;
 }
 
 .menu li:hover::after,
 .menu li.selected::after {
-  transform: translateX(-50%) scaleX(1); /* Scale smoothly without width change */
-  opacity: 1; /* Fade in the line */
+  transform: translateX(-50%) scaleX(1);
+  opacity: 1;
 }
-.imgCont{
+
+/* Custom Hamburger Icon */
+.hamburger {
+  display: none;
+  cursor: pointer;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.hamburger .bar {
+  width: 30px;
+  height: 4px;
+  background-color: #333;
+  transition: 0.3s ease;
+}
+
+.imgCont {
   position: relative;
 }
+
 .imgCont .img {
   width: 50px;
   height: 50px;
@@ -67,24 +93,27 @@
   border-radius: 4px;
   background: #f8f8f8;
 }
+
 .imgCont:hover .dropdownCont {
   display: block;
 }
+
 .dropdownCont ul {
   display: flex;
   flex-direction: column;
   gap: 10px;
   padding: 10px;
 }
+
 .dropdownCont ul li {
   cursor: pointer;
-  list-style: none;
   color: #333;
+  list-style: none;
 }
+
 .dropdownCont ul li:hover {
   color: #556bf8;
 }
-
 
 .btn-create-account {
   font-family: "Outfit";
@@ -95,4 +124,40 @@
   height: 45px;
   border-radius: 47px;
   cursor: pointer;
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+  .menu {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+    position: absolute;
+    top: 70px;
+    left: 20px;
+    background-color: #fff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    border-radius: 8px;
+  }
+   
+  .logo img {
+    width: 200px;
+    height: 42px;
+    cursor: pointer;
+  }
+
+  .menu.active {
+    display: flex;
+  }
+
+  .hamburger {
+    display: flex;
+  }
+
+  .btn-create-account {
+    width: 120px;
+    height: 40px;
+  }
 }

@@ -1,3 +1,4 @@
+/* General styling for larger screens */
 .contact-us {
   padding: 40px 20px;
 }
@@ -11,6 +12,7 @@
   color: #4b5563;
   text-align: center;
 }
+
 .contact-us h1 span {
   font-family: Outfit;
   font-size: 30px;
@@ -18,6 +20,7 @@
   line-height: 37.8px;
   color: #171717;
 }
+
 .contact-content {
   display: flex;
   align-items: center;
@@ -66,6 +69,63 @@
   text-align: center;
   background: #fff;
   color: #1f2937;
-
   cursor: pointer;
+}
+
+/* Media query for tablets and smaller screens (768px and below) */
+@media (max-width: 768px) {
+  .contact-us h1{
+    font-size: 40px;
+  }
+  .contact-us h1 span{
+    font-size: 40px;
+  }
+
+  .contact-content img {
+    display: none; /* Hide the image on screens smaller than 768px */
+  }
+  .contact-details{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .contact-details h3 {
+    font-size: 30px;
+  }
+
+  .contact-details p {
+    font-size: 18px;
+    text-align: center;
+  }
+
+  .explore-jobs {
+    width: 130px;
+    height: 50px;
+  }
+}
+
+/* Media query for mobile screens (480px and below) */
+@media (max-width: 480px) {
+  .contact-us h1 {
+    font-size: 24px;
+    line-height: 32px;
+  }
+
+  .contact-us h1 span {
+    font-size: 24px;
+  }
+
+  .contact-details h3 {
+    font-size: 20px;
+  }
+
+  .contact-details p {
+    font-size: 14px;
+  }
+
+  .explore-jobs {
+    width: 120px;
+    height: 45px;
+    font-size: 14px;
+  }
 }
