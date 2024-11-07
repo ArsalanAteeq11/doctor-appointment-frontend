@@ -8,43 +8,7 @@ import toast from "react-hot-toast";
 import { setLoading } from "@/redux/userSlice";
 
 
-const doctors = [
-  {
-    id: 1,
-    name: "Dr. Richard James",
-    image: "/assets/assets_frontend/doc1.png",
-    status: "Available",
-    speciality: "General physician",
-  },
-  {
-    id: 2,
-    name: "Dr. Richard James",
-    image: "/assets/assets_frontend/doc2.png",
-    status: "Available",
-    speciality: "General physician",
-  },
-  {
-    id: 3,
-    name: "Dr. Richard James",
-    image: "/assets/assets_frontend/doc3.png",
-    status: "Available",
-    speciality: "General physician",
-  },
-  {
-    id: 4,
-    name: "Dr. Richard James",
-    image: "/assets/assets_frontend/doc4.png",
-    status: "Available",
-    speciality: "General physician",
-  },
-  {
-    id: 5,
-    name: "Dr. Richard James",
-    image: "/assets/assets_frontend/doc5.png",
-    status: "Available",
-    speciality: "General physician",
-  },
-];
+
 const getNextSevenDays = () => {
   const days = [];
   const today = new Date();
