@@ -4,14 +4,17 @@
   background-color: #556bf8;
   display: flex;
   align-items: center;
+  justify-content: center;
   height: 400px;
   margin: 50px 0;
 }
+
 .cta-content {
   display: flex;
   flex-direction: column;
   gap: 10px;
 }
+
 .cta-content h2 {
   font-family: Outfit;
   font-size: 52px;
@@ -30,14 +33,89 @@
   font-weight: 400;
   color: #4b5563;
   background: #ffffff;
-  margin: 0;
   display: flex;
   align-items: center;
   justify-content: center;
 }
+
 .appointment_img img {
-  width: 400px;
-  height: 455px;
-  object-fit: cover;
+  width: 400px; /* Maintain full image width */
+  height: 490px; /* Maintain aspect ratio */
+  object-fit: contain; /* Prevent cropping */
   margin-top: -50px;
+  margin-bottom: -15px;
+}
+
+/* Responsive Styles */
+@media (max-width: 1000px) {
+  .cta-section {
+    height: 340px;
+    padding: 20px;
+  }
+
+  .cta-content h2 {
+    font-size: 40px;
+    text-align: left; /* Center-align heading */
+  }
+
+  .cta-content .btn-create-account {
+    width: 180px;
+    height: 50px;
+    font-size: 18px;
+  }
+
+  .appointment_img img {
+    width: 350px; /* Scale down for smaller screens */
+    height: 380px;
+  }
+}
+
+@media (max-width: 850px) {
+  .cta-section {
+    height: 300px;
+    padding: 15px;
+  }
+
+  .cta-content h2 {
+    font-size: 35px;
+  }
+
+  .cta-content .btn-create-account {
+    width: 160px;
+    height: 40px;
+    font-size: 16px;
+  }
+
+  .appointment_img img {
+    width: 320px;
+    height: 340px;
+  }
+}
+
+@media (max-width: 768px) {
+  .cta-section {
+    padding: 10px;
+  }
+
+  .cta-content h2 {
+    font-size: 40px;
+  }
+
+  .cta-content .btn-create-account {
+    width: 160px;
+    height: 40px;
+    font-size: 16px;
+  }
+
+  .appointment_img img {
+    display: none; /* Hide image completely on smaller screens */
+  }
+}
+@media (max-width:580px) {
+  .cta-section{
+    height: 250px;
+  }
+  .cta-section h2{
+    font-size: 30px;
+  }
 }
